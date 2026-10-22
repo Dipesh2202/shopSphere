@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common :: head('ShopSphere | Discover something good')}"></head>
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<main class="container">
+ <section class="hero my-4 my-lg-5">
+  <div class="hero-copy"><span class="eyebrow"><i class="bi bi-stars"></i> THE EVERYDAY EDIT</span><h1>Good finds.<br><em>Great everyday.</em></h1><p>Discover useful essentials, considered style and little upgrades for your space.</p><a href="#products" class="btn btn-light btn-lg rounded-pill px-4">Explore collection <i class="bi bi-arrow-down-right ms-2"></i></a><div class="hero-proof"><span><i class="bi bi-check-circle-fill"></i> Curated picks</span><span><i class="bi bi-box-seam"></i> Easy checkout demo</span></div></div>
+  <div class="hero-art"><div class="hero-orbit"></div><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&q=85" alt="Sneakers on a clean background"><div class="floating-tag"><i class="bi bi-heart-fill"></i><span><b>Made for your day</b><small>Style meets everyday use</small></span></div></div>
+ </section>
+ <section class="benefits row g-3 mb-5"><div class="col-6 col-lg-3"><div class="benefit"><i class="bi bi-truck"></i><span><b>Easy delivery</b><small>Demo checkout flow</small></span></div></div><div class="col-6 col-lg-3"><div class="benefit"><i class="bi bi-shield-check"></i><span><b>Simple & secure</b><small>Order details saved</small></span></div></div><div class="col-6 col-lg-3"><div class="benefit"><i class="bi bi-arrow-repeat"></i><span><b>Easy cart edits</b><small>Update anytime</small></span></div></div><div class="col-6 col-lg-3"><div class="benefit"><i class="bi bi-headset"></i><span><b>Here to help</b><small>Customer-first design</small></span></div></div></section>
+ <section id="products" class="mb-4"><div class="section-heading"><div><span class="eyebrow">HANDPICKED FOR YOU</span><h2>Popular right now</h2><p>Useful things, good design, sensible prices.</p></div><span class="results-count" th:text="${#lists.size(products)} + ' products'">8 products</span></div>
+ <div th:if="${#lists.isEmpty(products)}" class="empty-state"><i class="bi bi-search"></i><h3>No matches just yet</h3><p>Try another product name or category.</p><a href="/" class="btn btn-dark rounded-pill">View all products</a></div>
+ <div class="row g-4" th:unless="${#lists.isEmpty(products)}">
+  <div class="col-6 col-md-4 col-xl-3" th:each="p,stat : ${products}">
+   <article class="product-card h-100"><a th:href="@{/product/{id}(id=${p.id})}" class="product-image"><span class="product-chip" th:if="${stat.index < 3}">POPULAR</span><img th:src="${p.imageUrl} + '?auto=format&fit=crop&w=650&q=80'" th:alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=650&q=80'"></a>
+    <div class="product-info"><div class="product-category" th:text="${p.category}">Category</div><a class="product-name" th:href="@{/product/{id}(id=${p.id})}" th:text="${p.name}">Product name</a><div class="product-description" th:text="${p.description}">Description</div><div class="product-bottom"><div><strong th:text="'₹' + ${#numbers.formatDecimal(p.price,1,'COMMA',0,'POINT')}">₹2,499</strong><small th:text="${p.stock > 0 ? 'In stock' : 'Out of stock'}">In stock</small></div><form th:action="@{/cart/add/{id}(id=${p.id})}" method="post"><button class="add-button" type="submit" th:disabled="${p.stock <= 0}" aria-label="Add to cart"><i class="bi bi-plus-lg"></i></button></form></div></div>
+   </article>
+  </div>
+ </div></section>
+ <section class="newsletter my-5"><div><span class="eyebrow">A LITTLE GOOD IN YOUR INBOX</span><h2>Make room for better.</h2><p>Fresh finds and everyday inspiration, all in one place.</p></div><a href="#products" class="btn btn-dark rounded-pill px-4">Shop the edit <i class="bi bi-arrow-up-right ms-2"></i></a></section>
+</main>
+<div th:replace="~{fragments :: footer}"></div><div th:replace="~{common :: scripts}"></div>
+</body></html>
